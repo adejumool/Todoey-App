@@ -27,20 +27,24 @@ class ViewController: UIViewController {
         view.backgroundColor = .white
         return view
     }()
+    let footer: UIView = {
+        let view = UIView()
+        view.backgroundColor = .green
+        view.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        return view
+    }()
     let todoList: UITableView = {
         let view = UITableView()
-        
+
         return view
     }()
     
+
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        [header,body].forEach {view.addSubview($0)}
         
-        header.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 0, bottom: -10, right: 0), centerY: nil, centerX: nil)
-        body.anchor(top: header.bottomAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, centerY: nil, centerX: nil)
-        
+        [header,body,footer].forEach {view.addSubview($0)}
+        configureViews()
     }
     
     override func viewDidLayoutSubviews() {
@@ -51,8 +55,15 @@ class ViewController: UIViewController {
         headerGradient.frame = header.bounds
         [headerGradient].forEach{header.layer.insertSublayer($0, at: 0)}
     }
-    
-    
+}
+
+extension ViewController{
+    func configureViews(){
+        header.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 0, bottom: -10, right: 0), centerY: nil, centerX: nil)
+        body.anchor(top: header.bottomAnchor, leading: view.leadingAnchor, bottom: footer.topAnchor, trailing: view.trailingAnchor, centerY: nil, centerX: nil)
+        footer.anchor(top: body.bottomAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, centerY: nil, centerX: nil)
+
+    }
 }
 
 extension ViewController: UITableViewDelegate, UITableViewDataSource{
@@ -89,38 +100,8 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource{
 
 extension ViewController{
     func fetchData() -> [todoListElement]{
-        let element1 = todoListElement(check: true ,note: "Go Get some code done")
+        let element1 = todoListElement(check: false ,note: "My first to do list task")
         return [element1]
-    }
-}
-
-extension UIView{
-    func anchor(top:NSLayoutYAxisAnchor?,leading:NSLayoutXAxisAnchor?,bottom: NSLayoutYAxisAnchor?,trailing: NSLayoutXAxisAnchor?, padding: UIEdgeInsets = .zero, centerY:NSLayoutYAxisAnchor?, centerX:NSLayoutXAxisAnchor?){
-        
-        translatesAutoresizingMaskIntoConstraints = false
-        
-        if let top = top{
-            topAnchor.constraint(equalTo: top, constant: padding.top).isActive = true
-
-        }
-        if let leading = leading{
-            leadingAnchor.constraint(equalTo: leading, constant: padding.left).isActive = true
-
-        }
-        if let bottom=bottom{
-            bottomAnchor.constraint(equalTo: bottom, constant: padding.bottom).isActive = true
-
-        }
-        if let trailing = trailing{
-            trailingAnchor.constraint(equalTo: trailing, constant: padding.right).isActive = true
-        }
-        if let centerY = centerY{
-            centerYAnchor.constraint(equalTo: centerY).isActive = true
-        }
-        if let centerX = centerX{
-            centerXAnchor.constraint(equalTo: centerX).isActive = true
-        }
-        
     }
 }
 
