@@ -23,7 +23,7 @@ class ToDoListCell: UITableViewCell {
         return view
     }()
     
-    func set (cell: todoListElement){
+    func set (cell: TodoListElement){
         listLable.text = cell.note
         if cell.check == false{
             listCheckMark.image = UIImage(named: "unchecked")
